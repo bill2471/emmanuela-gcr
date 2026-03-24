@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rate Your Experience — Emmanuela</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background: #faf9f7;
+      color: #333;
+    }
+    .container {
+      text-align: center;
+      padding: 2rem;
+      max-width: 500px;
+    }
+    .logo {
+      max-width: 200px;
+      margin-bottom: 1.5rem;
+    }
+    .message {
+      font-size: 16px;
+      color: #666;
+      margin-bottom: 1rem;
+      line-height: 1.5;
+    }
+    .loading {
+      font-size: 14px;
+      color: #999;
+    }
+    .thank-you {
+      display: none;
+      margin-top: 1.5rem;
+    }
+    .thank-you h2 {
+      font-size: 20px;
+      color: #333;
+      margin-bottom: 0.5rem;
+    }
+    .thank-you p {
+      font-size: 14px;
+      color: #666;
+    }
+    .error {
+      display: none;
+      margin-top: 1.5rem;
+      padding: 1rem;
+      background: #fff3f3;
+      border-radius: 8px;
+      color: #c00;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <img
+      src="https://emmanuela.gr/cdn/shop/files/logo.png"
+      alt="Emmanuela"
+      class="logo"
+      onerror="this.style.display='none'"
+    >
+    <p class="message">Thank you for your purchase!</p>
+    <p class="loading" id="loading">Loading your review experience...</p>
+
+    <div class="thank-you" id="thankYou">
+      <h2>Thank you!</h2>
+      <p>You will receive a short survey email after your order is delivered.</p>
+      <p style="margin-top: 1rem; font-size: 13px; color: #999;">
+        You can close this tab or
+        <a href="#" id="returnLink" style="color: #666;">return to the store</a>.
+      </p>
+    </div>
+
+    <div class="error" id="errorMsg">
+      Something went wrong loading the survey. Please close this tab.
+    </div>
+  </div>
+
+  <script>
+    // Read URL parameters
+    function getParam(name) {
+      return new URLSearchParams(window.location.search).get(name);
+    }
+
+    // Domain-to-store mapping for return links
+    var domainMap = {
+      '120549606': 'https://emmanuela.gr',
+      '5714584556': 'https://emmanuela.jewelry',
+      '5715736622': 'https://emmanuela-schmuck.de',
+      '5715134428': 'https://emmanuela.co.uk'
+    };
+
+    var merchantId = getParam('merchant_id') || '5714046757';
+    var orderId = getParam('order_id');
+    var email = getParam('email');
+    var deliveryCountry = getParam('delivery_country');
+    var estimatedDeliveryDate = getParam('estimated_delivery_date');
+
+    // Set return link
+    var returnUrl = domainMap[merchantId] || 'https://emmanuela.gr';
+    document.getElementById('returnLink').href = returnUrl;
+
+    // Validate required params
+    if (!orderId || !email || !deliveryCountry || !estimatedDeliveryDate) {
+      document.getElementById('loading').style.display = 'none';
+      document.getElementById('errorMsg').style.display = 'block';
+      document.getElementById('errorMsg').textContent =
+        'Missing order information. Please close this tab and try again.';
+    }
+  </script>
+
+  <script src="https://apis.google.com/js/platform.js?onload=renderOptIn" async defer></script>
+  <script>
+    window.renderOptIn = function() {
+      try {
+        window.gapi.load('surveyoptin', function() {
+          window.gapi.surveyoptin.render({
+            merchant_id: parseInt(merchantId) || 5714046757,
+            order_id: orderId,
+            email: email,
+            delivery_country: deliveryCountry,
+            estimated_delivery_date: estimatedDeliveryDate,
+            opt_in_style: 'CENTER_DIALOG'
+          });
+
+          // Show thank you message after a short delay
+          // (Google dialog renders on top, this shows underneath)
+          setTimeout(function() {
+            document.getElementById('loading').style.display = 'none';
+            document.getElementById('thankYou').style.display = 'block';
+          }, 2000);
+        });
+      } catch (e) {
+        document.getElementById('loading').style.display = 'none';
+        document.getElementById('errorMsg').style.display = 'block';
+        console.error('Google Survey Opt-in error:', e);
+      }
+    };
+
+    // Fallback timeout — if Google script fails to load
+    setTimeout(function() {
+      if (typeof window.gapi === 'undefined') {
+        document.getElementById('loading').style.display = 'none';
+        document.getElementById('errorMsg').style.display = 'block';
+      }
+    }, 10000);
+  </script>
+</body>
+</html>
