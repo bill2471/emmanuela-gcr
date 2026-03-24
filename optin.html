@@ -123,9 +123,8 @@
       </div>
       <h2>All set!</h2>
       <p class="ty-text">You'll receive a short survey email after delivery.</p>
-      <div class="redirect-notice">
-        Returning to store in <span id="countdown">4</span>s &middot;
-        <a href="#" id="returnLink">go now</a>
+      <div class="redirect-notice" id="closeNotice">
+        Closing in <span id="countdown">3</span>s&hellip;
       </div>
       <div class="progress-bar">
         <div class="progress-fill" id="progressBar"></div>
@@ -170,7 +169,6 @@
     var estimatedDeliveryDate = getParam('estimated_delivery_date');
 
     var returnUrl = domainMap[merchantId] || 'https://emmanuela.gr';
-    document.getElementById('returnLink').href = returnUrl;
 
     // Check params immediately
     var hasMissingParams = !orderId || !email || !deliveryCountry || !estimatedDeliveryDate;
@@ -180,11 +178,12 @@
       showState('stateError');
     }
 
-    // Auto-redirect countdown
+    // Auto-close tab (or show fallback message)
     function startRedirect() {
-      var seconds = 4;
+      var seconds = 3;
       var countdownEl = document.getElementById('countdown');
       var progressEl = document.getElementById('progressBar');
+      var noticeEl = document.getElementById('closeNotice');
       progressEl.style.transition = 'width ' + seconds + 's linear';
       requestAnimationFrame(function() { progressEl.style.width = '100%'; });
       var timer = setInterval(function() {
@@ -192,7 +191,14 @@
         if (countdownEl) countdownEl.textContent = seconds;
         if (seconds <= 0) {
           clearInterval(timer);
-          window.location.href = returnUrl;
+          // Try to close this tab (works when opened via link)
+          window.close();
+          // If still open after 500ms, show fallback message
+          setTimeout(function() {
+            if (noticeEl) {
+              noticeEl.textContent = 'You can close this tab and return to your order.';
+            }
+          }, 500);
         }
       }, 1000);
     }
