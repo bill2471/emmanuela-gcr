@@ -4,6 +4,234 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Rate Your Experience — Emmanuela</title>
+  <script>
+    // Proxy page translations (18 languages)
+    var T = {
+      el: {
+        title: 'Αξιολόγησε την εμπειρία σου — Emmanuela',
+        heading: 'Ρύθμιση αξιολόγησης',
+        sub: 'Μια στιγμή, συνδεόμαστε με τη Google.',
+        loading: 'Φόρτωση',
+        success: 'Έτοιμο!',
+        survey: 'Θα λάβεις ένα σύντομο ερωτηματολόγιο μετά την παράδοση.',
+        closing: 'Κλείσιμο σε',
+        close_tab: 'Μπορείς να κλείσεις αυτή την καρτέλα και να επιστρέψεις στην παραγγελία σου.',
+        error: 'Κάτι πήγε στραβά. Κλείσε αυτή την καρτέλα.',
+        missing: 'Λείπουν στοιχεία παραγγελίας. Κλείσε αυτή την καρτέλα και δοκίμασε ξανά.'
+      },
+      en: {
+        title: 'Rate Your Experience — Emmanuela',
+        heading: 'Setting up your review',
+        sub: 'Just a moment while we connect with Google.',
+        loading: 'Loading',
+        success: 'All set!',
+        survey: 'You\'ll receive a short survey email after delivery.',
+        closing: 'Closing in',
+        close_tab: 'You can close this tab and return to your order.',
+        error: 'Something went wrong loading the survey. Please close this tab.',
+        missing: 'Missing order information. Please close this tab and try again.'
+      },
+      de: {
+        title: 'Bewerte dein Erlebnis — Emmanuela',
+        heading: 'Bewertung wird eingerichtet',
+        sub: 'Einen Moment, wir verbinden uns mit Google.',
+        loading: 'Laden',
+        success: 'Alles bereit!',
+        survey: 'Du erhältst nach der Lieferung eine kurze Umfrage per E-Mail.',
+        closing: 'Schließt in',
+        close_tab: 'Du kannst diesen Tab schließen und zu deiner Bestellung zurückkehren.',
+        error: 'Beim Laden der Umfrage ist ein Fehler aufgetreten. Bitte schließe diesen Tab.',
+        missing: 'Bestellinformationen fehlen. Bitte schließe diesen Tab und versuche es erneut.'
+      },
+      fr: {
+        title: 'Évalue ton expérience — Emmanuela',
+        heading: 'Mise en place de l\'évaluation',
+        sub: 'Un instant, nous nous connectons à Google.',
+        loading: 'Chargement',
+        success: 'C\'est prêt !',
+        survey: 'Tu recevras un bref questionnaire par e-mail après la livraison.',
+        closing: 'Fermeture dans',
+        close_tab: 'Tu peux fermer cet onglet et revenir à ta commande.',
+        error: 'Un problème est survenu. Ferme cet onglet.',
+        missing: 'Informations de commande manquantes. Ferme cet onglet et réessaye.'
+      },
+      es: {
+        title: 'Valora tu experiencia — Emmanuela',
+        heading: 'Configurando tu valoración',
+        sub: 'Un momento, nos conectamos con Google.',
+        loading: 'Cargando',
+        success: '¡Todo listo!',
+        survey: 'Recibirás una breve encuesta por correo electrónico después de la entrega.',
+        closing: 'Cerrando en',
+        close_tab: 'Puedes cerrar esta pestaña y volver a tu pedido.',
+        error: 'Algo salió mal. Cierra esta pestaña.',
+        missing: 'Faltan datos del pedido. Cierra esta pestaña e inténtalo de nuevo.'
+      },
+      it: {
+        title: 'Valuta la tua esperienza — Emmanuela',
+        heading: 'Preparazione della valutazione',
+        sub: 'Un momento, ci stiamo connettendo con Google.',
+        loading: 'Caricamento',
+        success: 'Tutto pronto!',
+        survey: 'Riceverai un breve sondaggio via email dopo la consegna.',
+        closing: 'Chiusura tra',
+        close_tab: 'Puoi chiudere questa scheda e tornare al tuo ordine.',
+        error: 'Qualcosa è andato storto. Chiudi questa scheda.',
+        missing: 'Mancano informazioni sull\'ordine. Chiudi questa scheda e riprova.'
+      },
+      nl: {
+        title: 'Beoordeel je ervaring — Emmanuela',
+        heading: 'Beoordeling instellen',
+        sub: 'Even geduld, we maken verbinding met Google.',
+        loading: 'Laden',
+        success: 'Klaar!',
+        survey: 'Je ontvangt na levering een korte enquête per e-mail.',
+        closing: 'Sluiten over',
+        close_tab: 'Je kunt dit tabblad sluiten en teruggaan naar je bestelling.',
+        error: 'Er ging iets mis. Sluit dit tabblad.',
+        missing: 'Bestelgegevens ontbreken. Sluit dit tabblad en probeer opnieuw.'
+      },
+      pt: {
+        title: 'Avalia a tua experiência — Emmanuela',
+        heading: 'A configurar a avaliação',
+        sub: 'Um momento, estamos a ligar ao Google.',
+        loading: 'A carregar',
+        success: 'Tudo pronto!',
+        survey: 'Receberás um breve inquérito por e-mail após a entrega.',
+        closing: 'A fechar em',
+        close_tab: 'Podes fechar este separador e voltar à tua encomenda.',
+        error: 'Algo correu mal. Fecha este separador.',
+        missing: 'Faltam dados da encomenda. Fecha este separador e tenta novamente.'
+      },
+      da: {
+        title: 'Vurder din oplevelse — Emmanuela',
+        heading: 'Opsætning af anmeldelse',
+        sub: 'Et øjeblik, vi opretter forbindelse til Google.',
+        loading: 'Indlæser',
+        success: 'Alt er klar!',
+        survey: 'Du modtager en kort undersøgelse via e-mail efter levering.',
+        closing: 'Lukker om',
+        close_tab: 'Du kan lukke denne fane og vende tilbage til din ordre.',
+        error: 'Noget gik galt. Luk venligst denne fane.',
+        missing: 'Ordreoplysninger mangler. Luk denne fane og prøv igen.'
+      },
+      sv: {
+        title: 'Betygsätt din upplevelse — Emmanuela',
+        heading: 'Konfigurerar omdöme',
+        sub: 'Ett ögonblick, vi ansluter till Google.',
+        loading: 'Laddar',
+        success: 'Klart!',
+        survey: 'Du kommer att få en kort enkät via e-post efter leverans.',
+        closing: 'Stänger om',
+        close_tab: 'Du kan stänga den här fliken och gå tillbaka till din beställning.',
+        error: 'Något gick fel. Stäng den här fliken.',
+        missing: 'Orderinformation saknas. Stäng den här fliken och försök igen.'
+      },
+      fi: {
+        title: 'Arvioi kokemuksesi — Emmanuela',
+        heading: 'Arvioinnin valmistelu',
+        sub: 'Hetkinen, yhdistämme Googleen.',
+        loading: 'Ladataan',
+        success: 'Valmis!',
+        survey: 'Saat lyhyen kyselyn sähköpostitse toimituksen jälkeen.',
+        closing: 'Sulkeutuu',
+        close_tab: 'Voit sulkea tämän välilehden ja palata tilaukseesi.',
+        error: 'Jokin meni pieleen. Sulje tämä välilehti.',
+        missing: 'Tilaustiedot puuttuvat. Sulje tämä välilehti ja yritä uudelleen.'
+      },
+      no: {
+        title: 'Vurder opplevelsen din — Emmanuela',
+        heading: 'Setter opp anmeldelse',
+        sub: 'Et øyeblikk, vi kobler til Google.',
+        loading: 'Laster',
+        success: 'Alt klart!',
+        survey: 'Du vil motta en kort undersøkelse på e-post etter levering.',
+        closing: 'Lukker om',
+        close_tab: 'Du kan lukke denne fanen og gå tilbake til bestillingen din.',
+        error: 'Noe gikk galt. Lukk denne fanen.',
+        missing: 'Ordreinfo mangler. Lukk denne fanen og prøv igjen.'
+      },
+      pl: {
+        title: 'Oceń swoje doświadczenie — Emmanuela',
+        heading: 'Przygotowywanie oceny',
+        sub: 'Chwileczkę, łączymy się z Google.',
+        loading: 'Ładowanie',
+        success: 'Gotowe!',
+        survey: 'Po dostawie otrzymasz krótką ankietę e-mailem.',
+        closing: 'Zamykanie za',
+        close_tab: 'Możesz zamknąć tę kartę i wrócić do zamówienia.',
+        error: 'Coś poszło nie tak. Zamknij tę kartę.',
+        missing: 'Brakuje informacji o zamówieniu. Zamknij tę kartę i spróbuj ponownie.'
+      },
+      cs: {
+        title: 'Ohodnoť svůj zážitek — Emmanuela',
+        heading: 'Příprava hodnocení',
+        sub: 'Okamžik, připojujeme se ke Google.',
+        loading: 'Načítání',
+        success: 'Hotovo!',
+        survey: 'Po doručení obdržíš krátký dotazník e-mailem.',
+        closing: 'Zavření za',
+        close_tab: 'Můžeš zavřít tuto kartu a vrátit se k objednávce.',
+        error: 'Něco se pokazilo. Zavři tuto kartu.',
+        missing: 'Chybí informace o objednávce. Zavři tuto kartu a zkus to znovu.'
+      },
+      hu: {
+        title: 'Értékeld a tapasztalatodat — Emmanuela',
+        heading: 'Értékelés előkészítése',
+        sub: 'Egy pillanat, csatlakozunk a Google-hoz.',
+        loading: 'Betöltés',
+        success: 'Kész!',
+        survey: 'A kézbesítés után egy rövid kérdőívet kapsz e-mailben.',
+        closing: 'Bezárás',
+        close_tab: 'Bezárhatod ezt a lapot és visszatérhetsz a rendelésedhez.',
+        error: 'Valami hiba történt. Zárd be ezt a lapot.',
+        missing: 'Hiányzó rendelési adatok. Zárd be ezt a lapot és próbáld újra.'
+      },
+      ro: {
+        title: 'Evaluează experiența ta — Emmanuela',
+        heading: 'Pregătirea evaluării',
+        sub: 'O clipă, ne conectăm la Google.',
+        loading: 'Se încarcă',
+        success: 'Totul e gata!',
+        survey: 'Vei primi un scurt chestionar prin e-mail după livrare.',
+        closing: 'Se închide în',
+        close_tab: 'Poți închide acest tab și te poți întoarce la comanda ta.',
+        error: 'Ceva nu a funcționat. Închide acest tab.',
+        missing: 'Lipsesc informații despre comandă. Închide acest tab și încearcă din nou.'
+      },
+      ja: {
+        title: '体験を評価 — Emmanuela',
+        heading: 'レビューの準備中',
+        sub: 'Googleに接続しています。少々お待ちください。',
+        loading: '読み込み中',
+        success: '準備完了！',
+        survey: '届いた後にアンケートメールを送るよ。',
+        closing: '閉じるまで',
+        close_tab: 'このタブを閉じて注文に戻れます。',
+        error: '問題が発生しました。このタブを閉じてください。',
+        missing: '注文情報がありません。このタブを閉じてもう一度お試しください。'
+      },
+      he: {
+        title: 'דרג את החוויה שלך — Emmanuela',
+        heading: 'מכין את הסקר',
+        sub: 'רגע, מתחברים ל-Google.',
+        loading: 'טוען',
+        success: 'הכל מוכן!',
+        survey: 'תקבל סקר קצר במייל אחרי המשלוח.',
+        closing: 'נסגר בעוד',
+        close_tab: 'אפשר לסגור את הלשונית הזו ולחזור להזמנה.',
+        error: 'משהו השתבש. סגור את הלשונית.',
+        missing: 'חסרים פרטי הזמנה. סגור את הלשונית ונסה שוב.'
+      }
+    };
+
+    // Get lang from URL, default to English
+    var pageLang = (new URLSearchParams(window.location.search).get('lang') || 'en').split('-')[0].toLowerCase();
+    var t = T[pageLang] || T['en'];
+
+    // Set page title
+    document.title = t.title;
+  </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Questrial&display=swap" rel="stylesheet">
@@ -111,9 +339,9 @@
 
     <!-- STATE 1: Loading (waiting for Google API) -->
     <div class="state state-loading active" id="stateLoading">
-      <p class="heading">Setting up your review</p>
-      <p class="sub">Just a moment while we connect with Google.</p>
-      <p class="spinner-row"><span class="spinner"></span>Loading</p>
+      <p class="heading" id="txtHeading"></p>
+      <p class="sub" id="txtSub"></p>
+      <p class="spinner-row"><span class="spinner"></span><span id="txtLoading"></span></p>
     </div>
 
     <!-- STATE 2: Success (Google opt-in registered) -->
@@ -121,10 +349,10 @@
       <div class="check-circle">
         <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
       </div>
-      <h2>All set!</h2>
-      <p class="ty-text">You'll receive a short survey email after delivery.</p>
+      <h2 id="txtSuccess"></h2>
+      <p class="ty-text" id="txtSurvey"></p>
       <div class="redirect-notice" id="closeNotice">
-        Closing in <span id="countdown">3</span>s&hellip;
+        <span id="txtClosing"></span> <span id="countdown">3</span>s&hellip;
       </div>
       <div class="progress-bar">
         <div class="progress-fill" id="progressBar"></div>
@@ -133,10 +361,21 @@
 
     <!-- STATE 3: Error -->
     <div class="state state-error" id="stateError">
-      <div class="error-box" id="errorText">
-        Something went wrong loading the survey. Please close this tab.
-      </div>
+      <div class="error-box" id="errorText"></div>
     </div>
+
+    <script>
+      // Apply translations to static elements
+      document.getElementById('txtHeading').textContent = t.heading;
+      document.getElementById('txtSub').textContent = t.sub;
+      document.getElementById('txtLoading').textContent = t.loading;
+      document.getElementById('txtSuccess').textContent = t.success;
+      document.getElementById('txtSurvey').textContent = t.survey;
+      document.getElementById('txtClosing').textContent = t.closing;
+      document.getElementById('errorText').textContent = t.error;
+      // Set dir=rtl for Hebrew
+      if (pageLang === 'he') document.documentElement.dir = 'rtl';
+    </script>
   </div>
 
   <script>
@@ -174,7 +413,7 @@
     var hasMissingParams = !orderId || !email || !deliveryCountry || !estimatedDeliveryDate;
     if (hasMissingParams) {
       document.getElementById('errorText').textContent =
-        'Missing order information. Please close this tab and try again.';
+        t.missing;
       showState('stateError');
     }
 
@@ -196,7 +435,7 @@
           // If still open after 500ms, show fallback message
           setTimeout(function() {
             if (noticeEl) {
-              noticeEl.textContent = 'You can close this tab and return to your order.';
+              noticeEl.textContent = t.close_tab;
             }
           }, 500);
         }
